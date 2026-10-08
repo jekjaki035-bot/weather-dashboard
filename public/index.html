@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>WeatherAI Pro - Dashboard Cuaca Premium</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Space+Mono:wght@400;700&display=swap"
+    rel="stylesheet"
+  />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+  <link rel="stylesheet" href="/style.css" />
+</head>
+<body>
+  <!-- Animated background -->
+  <div class="cosmic-bg">
+    <div class="cosmic-blob blob-1"></div>
+    <div class="cosmic-blob blob-2"></div>
+    <div class="cosmic-blob blob-3"></div>
+    <div class="radar-grid"></div>
+  </div>
+
+  <div class="app-container">
+    <!-- Sidebar Navigation -->
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <div class="logo-badge">🌍</div>
+        <div>
+          <p class="logo-text">WeatherAI</p>
+          <span class="badge-pro">PRO</span>
+        </div>
+      </div>
+
+      <nav class="sidebar-nav">
+        <a href="#" class="nav-item active" data-section="dashboard">
+          <span class="icon">🏠</span>
+          <span>Dashboard</span>
+        </a>
+        <a href="#" class="nav-item" data-section="alerts">
+          <span class="icon">🚨</span>
+          <span>Peringatan</span>
+          <span class="badge alert-badge" id="alertCount">0</span>
+        </a>
+        <a href="#" class="nav-item" data-section="hourly">
+          <span class="icon">⏰</span>
+          <span>Per Jam</span>
+        </a>
+        <a href="#" class="nav-item" data-section="analytics">
+          <span class="icon">📊</span>
+          <span>Analitik</span>
+        </a>
+        <a href="#" class="nav-item" data-section="settings">
+          <span class="icon">⚙️</span>
+          <span>Pengaturan</span>
+        </a>
+      </nav>
+
+      <div class="sidebar-footer">
+        <p class="text-xs">Diperbarui otomatis setiap 10 menit</p>
+      </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      <!-- Top Bar -->
+      <div class="topbar">
+        <div class="search-container">
+          <input 
+            type="text" 
+            id="citySearch" 
+            placeholder="Cari kota..." 
+            class="search-input"
+          />
+          <button id="searchBtn" class="btn-search">🔍</button>
+          <button id="locationBtn" class="btn-location">📍</button>
+        </div>
+
+        <div class="topbar-right">
+          <button id="themeToggle" class="btn-icon">🌙</button>
+          <button id="notificationBtn" class="btn-icon">🔔</button>
+          <div class="profile-badge">👤</div>
+        </div>
+      </div>
+
+      <!-- Dashboard Section -->
+      <section id="dashboard-section" class="section active">
+        <!-- AI Narrative Card -->
+        <div class="card card-narrative glass-strong">
+          <div class="narrative-header">
+            <h2>📖 Narasi Cuaca</h2>
+            <span class="badge-ai">AI Narrated</span>
+          </div>
+          <div id="aiNarrative" class="narrative-text">
+            Memuat narasi cuaca...
+          </div>
+        </div>
+
+        <!-- Current Weather Hero -->
+        <div class="hero-container">
+          <div class="card card-hero glass-strong">
+            <div class="radar-container">
+              <canvas id="radarChart"></canvas>
+              <div class="radar-overlay">
+                <div id="tempDisplay" class="temp-display">--°</div>
+              </div>
+            </div>
+
+            <div class="hero-info">
+              <div class="location-info">
+                <h1 id="locationName">Jakarta, Indonesia</h1>
+                <p id="updateTime" class="text-sm text-muted">Baru saja diperbarui</p>
+              </div>
+
+              <div class="weather-main">
+                <div class="weather-icon-lg" id="mainWeatherIcon">☀️</div>
+                <div>
+                  <p id="weatherDescription" class="weather-desc">Cerah</p>
+                  <p id="feelsLikeText" class="text-sm text-muted">Terasa seperti 28°</p>
+                </div>
+              </div>
+
+              <div class="weather-metrics-grid">
+                <div class="metric">
+                  <span class="metric-label">Kelembaban</span>
+                  <span id="humidityValue" class="metric-value">--%</span>
+                </div>
+                <div class="metric">
+                  <span class="metric-label">Angin</span>
+                  <span id="windValue" class="metric-value">-- km/h</span>
+                </div>
+                <div class="metric">
+                  <span class="metric-label">Indeks UV</span>
+                  <span id="uvValue" class="metric-value">--</span>
+                </div>
+                <div class="metric">
+                  <span class="metric-label">Tekanan</span>
+                  <span id="pressureValue" class="metric-value">-- mb</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Temperature Chart -->
+          <div class="card glass-strong chart-card">
+            <h3>📈 Tren Suhu</h3>
+            <canvas id="tempChart" height="80"></canvas>
+          </div>
+        </div>
+
+        <!-- Alert Section -->
+        <div class="card card-alerts glass-strong">
+          <div class="alerts-header">
+            <h2>⚠️ Peringatan Cuaca</h2>
+            <button class="btn-small">Lihat Semua</button>
+          </div>
+          <div id="alertsList" class="alerts-list">
+            <p class="text-muted">Tidak ada peringatan saat ini</p>
+          </div>
+        </div>
+
+        <!-- 7-Day Forecast -->
+        <div class="card glass-strong">
+          <div class="section-header">
+            <h2>📅 Prakiraan 7 Hari</h2>
+          </div>
+          <div id="forecastGrid" class="forecast-grid">
+            <!-- Populated by JS -->
+          </div>
+        </div>
+
+        <!-- Stats Grid -->
+        <div class="stats-grid">
+          <div class="card glass stat-card">
+            <span class="stat-icon">🌅</span>
+            <p class="stat-label">Matahari Terbit</p>
+            <p id="sunriseTime" class="stat-value">--:--</p>
+          </div>
+          <div class="card glass stat-card">
+            <span class="stat-icon">🌇</span>
+            <p class="stat-label">Matahari Terbenam</p>
+            <p id="sunsetTime" class="stat-value">--:--</p>
+          </div>
+          <div class="card glass stat-card">
+            <span class="stat-icon">💧</span>
+            <p class="stat-label">Hujan Hari Ini</p>
+            <p id="rainToday" class="stat-value">-- mm</p>
+          </div>
+          <div class="card glass stat-card">
+            <span class="stat-icon">🌬️</span>
+            <p class="stat-label">Angin Maks</p>
+            <p id="maxWind" class="stat-value">-- km/h</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Alerts Section -->
+      <section id="alerts-section" class="section">
+        <div class="card glass-strong">
+          <h2>Semua Peringatan Cuaca</h2>
+          <div id="allAlerts" class="alerts-detailed">
+            <p class="text-muted">Tidak ada peringatan aktif</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Hourly Section -->
+      <section id="hourly-section" class="section">
+        <div class="card glass-strong">
+          <h2>Prakiraan Per Jam</h2>
+          <div id="hourlyGrid" class="hourly-grid">
+            <!-- Populated by JS -->
+          </div>
+        </div>
+      </section>
+
+      <!-- Analytics Section -->
+      <section id="analytics-section" class="section">
+        <div class="card glass-strong">
+          <h2>📊 Analitik Cuaca</h2>
+          <div class="analytics-grid">
+            <canvas id="humidityChart" height="80"></canvas>
+            <canvas id="windChart" height="80"></canvas>
+          </div>
+        </div>
+      </section>
+
+      <!-- Settings Section -->
+      <section id="settings-section" class="section">
+        <div class="card glass-strong">
+          <h2>⚙️ Pengaturan</h2>
+          <div class="settings-list">
+            <div class="setting-item">
+              <label>
+                <input type="checkbox" id="notificationToggle" checked />
+                Aktifkan Notifikasi
+              </label>
+            </div>
+            <div class="setting-item">
+              <label>
+                <input type="checkbox" id="darkMode" checked />
+                Mode Gelap
+              </label>
+            </div>
+            <div class="setting-item">
+              <label>
+                <input type="radio" name="unit" value="celsius" checked />
+                Celsius (°C)
+              </label>
+              <label>
+                <input type="radio" name="unit" value="fahrenheit" />
+                Fahrenheit (°F)
+              </label>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script src="/app.js"></script>
+</body>
+</html>
