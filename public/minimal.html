@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>WeatherFlow - Minimalist Weather Dashboard</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+    rel="stylesheet"
+  />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <link rel="stylesheet" href="/style-minimal.css" />
+</head>
+<body>
+  <!-- Gradient Background -->
+  <div class="gradient-bg"></div>
+
+  <!-- Language Selector -->
+  <div class="lang-selector">
+    <button class="lang-btn active" data-lang="en">English</button>
+    <button class="lang-btn" data-lang="id">Bahasa Indonesia</button>
+    <button class="lang-btn" data-lang="ja">日本語</button>
+    <button class="lang-btn" data-lang="ko">한국어</button>
+    <button class="lang-btn" data-lang="zh">中文</button>
+    <button class="lang-btn" data-lang="es">Español</button>
+  </div>
+
+  <div class="container">
+    <!-- Header -->
+    <header class="header">
+      <div class="header-left">
+        <h1 class="logo">
+          <span class="logo-icon">🌤️</span>
+          <span data-i18n="appName">WeatherFlow</span>
+        </h1>
+      </div>
+
+      <div class="header-center">
+        <div class="search-box">
+          <input
+            type="text"
+            id="citySearch"
+            class="search-input"
+            placeholder="Search city..."
+            data-i18n-placeholder="searchPlaceholder"
+          />
+          <button id="searchBtn" class="btn-primary" data-i18n="search">Search</button>
+        </div>
+      </div>
+
+      <div class="header-right">
+        <button id="locationBtn" class="btn-icon" title="Use my location">📍</button>
+        <button id="themeToggle" class="btn-icon" title="Toggle theme">🌙</button>
+      </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main">
+      <!-- Current Weather -->
+      <section class="weather-card">
+        <div class="weather-header">
+          <div>
+            <p class="location-label" data-i18n="location">Location</p>
+            <h2 id="cityName" class="city-name">Jakarta, Indonesia</h2>
+            <p id="updateTime" class="update-time">Just now</p>
+          </div>
+          <div class="weather-icon-lg" id="mainIcon">☀️</div>
+        </div>
+
+        <div class="weather-body">
+          <div class="temp-section">
+            <div class="temp-main">
+              <span id="tempValue" class="temp-value">28</span>
+              <span class="temp-unit">°C</span>
+            </div>
+            <p id="weatherDesc" class="weather-description">Clear Sky</p>
+            <p id="feelsLike" class="feels-like">Feels like 30°C</p>
+          </div>
+
+          <div class="metrics">
+            <div class="metric">
+              <span class="metric-icon">💧</span>
+              <span class="metric-label" data-i18n="humidity">Humidity</span>
+              <span id="humidityValue" class="metric-value">65%</span>
+            </div>
+            <div class="metric">
+              <span class="metric-icon">💨</span>
+              <span class="metric-label" data-i18n="wind">Wind</span>
+              <span id="windValue" class="metric-value">12 km/h</span>
+            </div>
+            <div class="metric">
+              <span class="metric-icon">☀️</span>
+              <span class="metric-label" data-i18n="uv">UV Index</span>
+              <span id="uvValue" class="metric-value">5</span>
+            </div>
+            <div class="metric">
+              <span class="metric-icon">🔽</span>
+              <span class="metric-label" data-i18n="pressure">Pressure</span>
+              <span id="pressureValue" class="metric-value">1013 mb</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="weather-footer">
+          <div class="footer-item">
+            <span class="footer-label" data-i18n="sunrise">Sunrise</span>
+            <span id="sunriseTime" class="footer-value">05:34</span>
+          </div>
+          <div class="divider"></div>
+          <div class="footer-item">
+            <span class="footer-label" data-i18n="sunset">Sunset</span>
+            <span id="sunsetTime" class="footer-value">17:52</span>
+          </div>
+          <div class="divider"></div>
+          <div class="footer-item">
+            <span class="footer-label" data-i18n="rain">Rain</span>
+            <span id="rainValue" class="footer-value">2mm</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- 7-Day Forecast -->
+      <section class="forecast-section">
+        <h3 class="section-title" data-i18n="forecast7days">7-Day Forecast</h3>
+        <div id="forecastGrid" class="forecast-grid">
+          <!-- Populated by JS -->
+        </div>
+      </section>
+
+      <!-- Hourly Forecast -->
+      <section class="hourly-section">
+        <h3 class="section-title" data-i18n="hourlyForecast">Hourly Forecast</h3>
+        <div id="hourlyGrid" class="hourly-grid">
+          <!-- Populated by JS -->
+        </div>
+      </section>
+
+      <!-- Temperature Chart -->
+      <section class="chart-section">
+        <h3 class="section-title" data-i18n="temperatureTrend">Temperature Trend</h3>
+        <div class="chart-container">
+          <canvas id="tempChart"></canvas>
+        </div>
+      </section>
+
+      <!-- Analytics -->
+      <section class="analytics-section">
+        <div class="analytics-row">
+          <div class="analytics-card">
+            <h4 class="analytics-title" data-i18n="humidity">Humidity</h4>
+            <div class="chart-container-small">
+              <canvas id="humidityChart"></canvas>
+            </div>
+          </div>
+          <div class="analytics-card">
+            <h4 class="analytics-title" data-i18n="wind">Wind Speed</h4>
+            <div class="chart-container-small">
+              <canvas id="windChart"></canvas>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Alerts -->
+      <section id="alertsSection" class="alerts-section" style="display: none;">
+        <h3 class="section-title" data-i18n="alerts">Weather Alerts</h3>
+        <div id="alertsList" class="alerts-list">
+          <!-- Populated by JS -->
+        </div>
+      </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <p data-i18n="footerText">Data powered by Open-Meteo • Updated automatically every 10 minutes</p>
+    </footer>
+  </div>
+
+  <script src="/i18n.js"></script>
+  <script src="/app-minimal.js"></script>
+</body>
+</html>
