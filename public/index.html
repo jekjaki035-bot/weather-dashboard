@@ -29,14 +29,14 @@
         <div class="logo-badge">🌍</div>
         <div>
           <p class="logo-text">WeatherAI</p>
-          <span class="badge-pro">PRO</span>
+          <span class="badge-pro">PREMIUM</span>
         </div>
       </div>
 
       <nav class="sidebar-nav">
         <a href="#" class="nav-item active" data-section="dashboard">
           <span class="icon">🏠</span>
-          <span>Dashboard</span>
+          <span>Dasbor</span>
         </a>
         <a href="#" class="nav-item" data-section="alerts">
           <span class="icon">🚨</span>
@@ -78,9 +78,9 @@
         </div>
 
         <div class="topbar-right">
-          <button id="themeToggle" class="btn-icon">🌙</button>
-          <button id="notificationBtn" class="btn-icon">🔔</button>
-          <div class="profile-badge">👤</div>
+          <button id="themeToggle" class="btn-icon" title="Alihkan tema">🌙</button>
+          <button id="notificationBtn" class="btn-icon" title="Notifikasi">🔔</button>
+          <div class="profile-badge" title="Profil">👤</div>
         </div>
       </div>
 
@@ -90,7 +90,7 @@
         <div class="card card-narrative glass-strong">
           <div class="narrative-header">
             <h2>📖 Narasi Cuaca</h2>
-            <span class="badge-ai">AI Narrated</span>
+            <span class="badge-ai">Narasi AI</span>
           </div>
           <div id="aiNarrative" class="narrative-text">
             Memuat narasi cuaca...
@@ -127,8 +127,8 @@
                   <span id="humidityValue" class="metric-value">--%</span>
                 </div>
                 <div class="metric">
-                  <span class="metric-label">Angin</span>
-                  <span id="windValue" class="metric-value">-- km/h</span>
+                  <span class="metric-label">Kecepatan Angin</span>
+                  <span id="windValue" class="metric-value">-- km/j</span>
                 </div>
                 <div class="metric">
                   <span class="metric-label">Indeks UV</span>
@@ -144,7 +144,7 @@
 
           <!-- Temperature Chart -->
           <div class="card glass-strong chart-card">
-            <h3>📈 Tren Suhu</h3>
+            <h3>📈 Tren Suhu Harian</h3>
             <canvas id="tempChart" height="80"></canvas>
           </div>
         </div>
@@ -163,10 +163,10 @@
         <!-- 7-Day Forecast -->
         <div class="card glass-strong">
           <div class="section-header">
-            <h2>📅 Prakiraan 7 Hari</h2>
+            <h2>📅 Prakiraan 7 Hari Ke Depan</h2>
           </div>
           <div id="forecastGrid" class="forecast-grid">
-            <!-- Populated by JS -->
+            <!-- Diisi oleh JavaScript -->
           </div>
         </div>
 
@@ -184,13 +184,13 @@
           </div>
           <div class="card glass stat-card">
             <span class="stat-icon">💧</span>
-            <p class="stat-label">Hujan Hari Ini</p>
+            <p class="stat-label">Curah Hujan Hari Ini</p>
             <p id="rainToday" class="stat-value">-- mm</p>
           </div>
           <div class="card glass stat-card">
             <span class="stat-icon">🌬️</span>
-            <p class="stat-label">Angin Maks</p>
-            <p id="maxWind" class="stat-value">-- km/h</p>
+            <p class="stat-label">Kecepatan Angin Maksimal</p>
+            <p id="maxWind" class="stat-value">-- km/j</p>
           </div>
         </div>
       </section>
@@ -198,9 +198,9 @@
       <!-- Alerts Section -->
       <section id="alerts-section" class="section">
         <div class="card glass-strong">
-          <h2>Semua Peringatan Cuaca</h2>
+          <h2>📢 Semua Peringatan Cuaca</h2>
           <div id="allAlerts" class="alerts-detailed">
-            <p class="text-muted">Tidak ada peringatan aktif</p>
+            <p class="text-muted">Tidak ada peringatan aktif saat ini</p>
           </div>
         </div>
       </section>
@@ -208,9 +208,9 @@
       <!-- Hourly Section -->
       <section id="hourly-section" class="section">
         <div class="card glass-strong">
-          <h2>Prakiraan Per Jam</h2>
+          <h2>⏱️ Prakiraan Per Jam</h2>
           <div id="hourlyGrid" class="hourly-grid">
-            <!-- Populated by JS -->
+            <!-- Diisi oleh JavaScript -->
           </div>
         </div>
       </section>
@@ -218,10 +218,16 @@
       <!-- Analytics Section -->
       <section id="analytics-section" class="section">
         <div class="card glass-strong">
-          <h2>📊 Analitik Cuaca</h2>
+          <h2>📊 Analitik Cuaca Mendalam</h2>
           <div class="analytics-grid">
-            <canvas id="humidityChart" height="80"></canvas>
-            <canvas id="windChart" height="80"></canvas>
+            <div class="analytics-chart">
+              <h4>Kelembaban (%)</h4>
+              <canvas id="humidityChart" height="60"></canvas>
+            </div>
+            <div class="analytics-chart">
+              <h4>Kecepatan Angin (km/j)</h4>
+              <canvas id="windChart" height="60"></canvas>
+            </div>
           </div>
         </div>
       </section>
@@ -229,21 +235,22 @@
       <!-- Settings Section -->
       <section id="settings-section" class="section">
         <div class="card glass-strong">
-          <h2>⚙️ Pengaturan</h2>
+          <h2>⚙️ Pengaturan Aplikasi</h2>
           <div class="settings-list">
             <div class="setting-item">
               <label>
                 <input type="checkbox" id="notificationToggle" checked />
-                Aktifkan Notifikasi
+                Aktifkan Notifikasi Pemberitahuan
               </label>
             </div>
             <div class="setting-item">
               <label>
                 <input type="checkbox" id="darkMode" checked />
-                Mode Gelap
+                Mode Gelap/Malam
               </label>
             </div>
             <div class="setting-item">
+              <p class="setting-label">Satuan Suhu:</p>
               <label>
                 <input type="radio" name="unit" value="celsius" checked />
                 Celsius (°C)
@@ -251,6 +258,17 @@
               <label>
                 <input type="radio" name="unit" value="fahrenheit" />
                 Fahrenheit (°F)
+              </label>
+            </div>
+            <div class="setting-item">
+              <p class="setting-label">Satuan Kecepatan:</p>
+              <label>
+                <input type="radio" name="speed" value="kmh" checked />
+                Kilometer per Jam (km/j)
+              </label>
+              <label>
+                <input type="radio" name="speed" value="ms" />
+                Meter per Detik (m/d)
               </label>
             </div>
           </div>
